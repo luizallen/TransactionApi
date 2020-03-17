@@ -2,26 +2,19 @@ package com.project.transactionApi.Controllers;
 
 import com.project.transactionApi.Models.Account;
 import com.project.transactionApi.Repositories.Abstractions.IAccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
+@RequestMapping("/api/account")
 public class AccountController {
+    @Autowired
     public IAccountRepository accountRepository;
 
-    public AccountController(IAccountRepository accountRepository) {
-        if(accountRepository == null )
-            throw new IllegalArgumentException();
-
-        this.accountRepository =  accountRepository;
-    }
-
-    @GetMapping("/account/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Account> getAccount(int id){
         Account account = accountRepository.get(id);
 
@@ -31,7 +24,7 @@ public class AccountController {
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
-    @PostMapping("/account")
+    @PostMapping("/")
     public ResponseEntity<Account> createAccount(@RequestBody Account account){
         accountRepository.save(account);
 
