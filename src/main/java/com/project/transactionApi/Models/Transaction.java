@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class Transaction {
     public int transactionId;
     public int accountId;
-    public OperationTypeEnum operationTypeEnum;
+    public OperationTypeEnum operationType;
     public int amount;
     public LocalDateTime eventDate;
 }

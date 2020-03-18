@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/api/transaction")
+@RequestMapping("/api/transactions")
 public class TransactionController {
     @Autowired
     public ITransactionRepository transactionRepository;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Transaction> getAccount(int id){
+    public ResponseEntity<Transaction> getTransaction(int id){
         Transaction transaction = transactionRepository.get(id);
 
         if(transaction == null)
@@ -26,11 +26,11 @@ public class TransactionController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Transaction> createAccount(@RequestBody TransactionRequest transactionRequest){
+    public ResponseEntity<Transaction> createTransaction(@RequestBody TransactionRequest transactionRequest){
         Transaction transaction = new Transaction(
                 transactionRequest.transactionId,
                 transactionRequest.accountId,
-                transactionRequest.operationTypeEnum,
+                transactionRequest.operationType,
                 transactionRequest.amount,
                 transactionRequest.eventDate
         );
