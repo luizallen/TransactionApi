@@ -2,6 +2,7 @@ package com.project.transactionApi.Controllers;
 
 import com.project.transactionApi.Models.Account;
 import com.project.transactionApi.Repositories.Abstractions.IAccountRepository;
+import com.project.transactionApi.Requests.AccountRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,9 @@ public class AccountController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Account> createAccount(@RequestBody Account account){
+    public ResponseEntity<Account> createAccount(@RequestBody AccountRequest accountRequest){
+        Account account = new Account(accountRequest.accountId, accountRequest.documentNumber);
+
         accountRepository.save(account);
 
         return new ResponseEntity<Account>(account, HttpStatus.CREATED);
