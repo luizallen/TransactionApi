@@ -46,7 +46,7 @@ services:
   init-dynamo-transactions-table:
     image: garland/aws-cli-docker
     command: "aws dynamodb create-table --table-name Transactions \
-    --attribute-definitions \s
+    --attribute-definitions \
     AttributeName=TransactionId,AttributeType=N \
     AttributeName=AccountId,AttributeType=N \
     AttributeName=OperationTypeId,AttributeType=N \
