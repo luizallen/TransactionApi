@@ -19,4 +19,4 @@ Executar o comando docker-compose up na pasta da aplicação;
 
 Postman:
 
-https://www.getpostman.com/collections/975daed61779061b97a3 **Para utilizar a collection, terá q alterar a Url para url local;
+https://www.getpostman.com/collections/e53e4b95657a1baab1da **Para utilizar a collection, terá q alterar a Url para url local;
