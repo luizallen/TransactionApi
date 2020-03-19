@@ -6,7 +6,7 @@ services:
   transaction.api:
     image: trasactionapi
     ports:
-    - "8080:8080"
+    - "7000:7000"
     build:
       context: .
       dockerfile: Dockerfile
@@ -21,6 +21,7 @@ services:
     container_name: dynamodb-local
     ports:
       - "8000:8000"
+    command: ["-jar", "DynamoDBLocal.jar", "-sharedDb", "-inMemory"]
     networks:
       - local
 
@@ -28,11 +29,9 @@ services:
     image: garland/aws-cli-docker
     command: "aws dynamodb create-table --table-name Accounts \
     --attribute-definitions \
-    AttributeName=AccountId,AttributeType=N \
-    AttributeName=DocumentNumber,AttributeType=N \
+    AttributeName=AccountId,AttributeType=S \
     --key-schema \
     AttributeName=AccountId,KeyType=HASH \
-    AttributeName=DocumentNumber,KeyType=RANGE \
     --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --endpoint-url http://dynamodb-local:8000"
     depends_on:
       - dynamodb
@@ -45,20 +44,11 @@ services:
 
   init-dynamo-transactions-table:
     image: garland/aws-cli-docker
-    command: "aws dynamodb create-table --table-name Transactions \
+    command: "aws dynamodb create-table --table-name AccountTransactions \
     --attribute-definitions \
-    AttributeName=TransactionId,AttributeType=N \
-    AttributeName=AccountId,AttributeType=N \
-    AttributeName=OperationTypeId,AttributeType=N \
-    AttributeName=Amount,AttributeType=N \
-    AttributeName=EventDate,AttributeType=S \
+    AttributeName=AccountId,AttributeType=S \
     --key-schema \
-    AttributeName=TransactionId,KeyType=HASH \    
-    AttributeName=AccountId,KeyType=RANGE \
-    --local-secondary-indexes \
-    'IndexName=operationTypeIndex,KeySchema=[{AttributeName=TransactionId,KeyType=HASH}, {AttributeName=OperationTypeId,KeyType=RANGE}], Projection={ProjectionType=ALL}' \
-    'IndexName=AmountIndex,KeySchema=[{AttributeName=TransactionId,KeyType=HASH}, {AttributeName=Amount,KeyType=RANGE}], Projection={ProjectionType=ALL}' \
-    'IndexName=EventDateIndex,KeySchema=[{AttributeName=TransactionId,KeyType=HASH}, {AttributeName=EventDate,KeyType=RANGE}], Projection={ProjectionType=ALL}' \
+    AttributeName=AccountId,KeyType=HASH \    
     --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --endpoint-url http://dynamodb-local:8000"
     depends_on:
       - dynamodb

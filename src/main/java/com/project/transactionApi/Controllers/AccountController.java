@@ -9,25 +9,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @RestController
-@RequestMapping("/api/accounts")
 public class AccountController {
     @Autowired
-    public IAccountRepository accountRepository;
+    private IAccountRepository accountRepository;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Account> getAccount(int id){
-        Account account = accountRepository.get(id);
 
-        if(account == null)
+    @GetMapping("/api/accounts/{id}")
+    public ResponseEntity<Account> getAccount(@PathVariable("id") String id){
+        if(id.equals(""))
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        Optional<Account> optAccount = accountRepository.findById(id);
+
+        if(optAccount.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account does not exists");
 
-        return new ResponseEntity<>(account, HttpStatus.OK);
+        return new ResponseEntity<>(optAccount.get(), HttpStatus.OK);
     }
 
-    @PostMapping("/")
+    @PostMapping("/api/accounts")
     public ResponseEntity<Account> createAccount(@RequestBody AccountRequest accountRequest){
-        Account account = new Account(accountRequest.accountId, accountRequest.documentNumber);
+        Account account = new Account(
+                UUID.randomUUID().toString(),
+                accountRequest.documentNumber);
 
         accountRepository.save(account);
 

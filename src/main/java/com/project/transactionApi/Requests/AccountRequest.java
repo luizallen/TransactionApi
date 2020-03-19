@@ -4,6 +4,5 @@ import lombok.Data;
 
 @Data
 public class AccountRequest {
-    public int accountId;
-    public int documentNumber;
+    public String documentNumber;
 }
