@@ -7,5 +7,5 @@ import lombok.Data;
 public class TransactionRequest {
     public String accountId;
     public OperationTypeEnum operationType;
-    public String amount;
+    public int amount;
 }

@@ -82,6 +82,6 @@ public class AccountController {
     }
 
     private int GetCurrentAmount(List<Transaction> transactions){
-        return  transactions.stream().mapToInt(t -> Integer.parseInt(t.getAmount())).sum();
+        return  transactions.stream().mapToInt(Transaction::getAmount).sum();
     }
 }

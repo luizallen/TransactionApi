@@ -2,6 +2,7 @@ package com.project.transactionApi.Controllers;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.transactionApi.Enums.OperationTypeEnum;
 import com.project.transactionApi.Models.AccountTransaction;
 import com.project.transactionApi.Models.Transaction;
 import com.project.transactionApi.Repositories.Abstractions.IAccountTransactionsRepository;
@@ -100,8 +101,17 @@ public class TransactionController {
                 UUID.randomUUID().toString(),
                 transactionRequest.accountId,
                 transactionRequest.operationType,
-                transactionRequest.amount,
+                GetAmountOperator(transactionRequest),
                 LocalDateTime.now().toString()
         );
+    }
+
+    private int GetAmountOperator(TransactionRequest transactionRequest){
+        var amount = transactionRequest.getAmount();
+
+        if(transactionRequest.getOperationType() == OperationTypeEnum.SAQUE)
+            return amount *= -1;
+
+        return amount;
     }
 }

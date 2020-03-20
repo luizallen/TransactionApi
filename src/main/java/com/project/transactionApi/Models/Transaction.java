@@ -12,7 +12,7 @@ public class Transaction {
     @DynamoDBIgnore
     public String accountId;
     public OperationTypeEnum operationType;
-    public String amount;
+    public int amount;
     public String eventDate;
 
     public Transaction(){
